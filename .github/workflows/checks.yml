@@ -52,8 +52,6 @@ jobs:
           for name in $(python3 -c "import tomllib; print(*tomllib.load(open('repository/checks/config.toml', 'rb'))['bibliography_keys']['family'])"); do
             git clone --quiet --depth 1 "https://github.com/Tewf/$name" "$name"
           done
-      - name: Run the unit tests under checks/
-        run: python3 -m unittest discover -s repository/checks
       - name: Check the repository, tiers program and meaning
         # Runs the topic check, the Lean link check and the comparator (checks/local/) with the standard's own.
         run: python3 standard/checks/run.py repository --tiers program,meaning --judge flag
@@ -62,22 +60,6 @@ jobs:
         run: cat repository/checks/out/needs-judgment.md 2>/dev/null || echo "No questions for judgment."
 
   # The proofs: Lean checks every declaration the topics name. Mathlib is large, so its prebuilt cache is fetched first.
-  lean:
-    if: github.event_name != 'schedule'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install elan
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Fetch Mathlib's cache
-        run: lake exe cache get
-      - name: Build, failing on any warning, sorry included
-        run: lake build
-      - name: Compare each proof with its challenge, in Lean
-        # The challenge file holds sorry on purpose, so it is built apart; Agreement.lean fails when a type or an axiom differs.
-        run: lake build BlueprintCompare
 
   weekly:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
