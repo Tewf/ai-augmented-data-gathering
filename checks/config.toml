@@ -28,3 +28,10 @@ family = ["reader-ergonomics",
           "reader-ergonomics-blueprint",
           "ai-augmented"]
 shared_links = []
+
+# The stopping estimator (checks/local/stopping_estimator.py). Both values are PROVISIONAL: no study sets them for a
+# literature review. The rule's k is the family's own 5; the target is the usual level of coverage reports in ecology.
+[stopping_estimator]
+k_without_new = 5        # PROVISIONAL: results in a row that add no concept before a string is stopped
+coverage_target = 0.95   # PROVISIONAL: estimated sample coverage at which the estimator says stop
+min_results = 30         # PROVISIONAL: results before the estimator may say stop; a handful of equal results has no singleton and looks complete
