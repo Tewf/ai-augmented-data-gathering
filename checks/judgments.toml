@@ -11,3 +11,52 @@ path = "decisions"
 question = "2 entries: fold into the parent folder, unless this folder is one record of a collection (a job, a chapter, a topic)."
 file = ""
 answer = "It stays: `decisions` is the folder the decision-record shape names for its records; it holds the README and record 0001 today, and grows one file per choice."
+
+[[answer]]
+check = "document-mode"
+path = "evidence/foraging-and-stopping/README.md"
+question = "reads about equally as how-to and reference: one mode per document?"
+file = "29ac6030786f"
+answer = "It is a reference: the `Contents` table and the `Claims` table are lookups, and the file holds no steps to follow."
+
+[[answer]]
+check = "document-mode"
+path = "evidence/foraging-and-stopping/review.md"
+question = "reads about equally as reference and tutorial: one mode per document?"
+file = "b6150e921f3b"
+answer = "It is a reference by topic: each `Strand` is looked up for what the field says, and no strand asks the reader to do a task."
+
+[[answer]]
+check = "name-content"
+path = "evidence/foraging-and-stopping/frame.md"
+question = "the name 'frame' and the opening are far apart in meaning (0.04): does the name predict the content?"
+file = "453d5a6afd48"
+answer = "Yes: `Frame` is the name of step 1 of the review, and the opening states the problem in one sentence and what each field calls it."
+
+[[answer]]
+check = "name-content"
+path = "evidence/foraging-and-stopping/on-the-family.md"
+question = "the name 'family' and the opening are far apart in meaning (0.14): does the name predict the content?"
+file = "e1d5e3d66bd4"
+answer = "Yes: the file is named for its subject, the baseline run on the family's protocols, and `Caution` and `Result` follow from that."
+
+[[answer]]
+check = "name-content"
+path = "evidence/foraging-and-stopping/position.md"
+question = "the name 'position' and the opening are far apart in meaning (0.00): does the name predict the content?"
+file = "e91f52d61ca3"
+answer = "Yes: `Position` is step 4 of the review, and the opening says it keeps what is known apart from what this repository adds."
+
+[[answer]]
+check = "name-content"
+path = "evidence/foraging-and-stopping/protocol.md"
+question = "the name 'protocol' and the opening are far apart in meaning (0.06): does the name predict the content?"
+file = "6a1063c781f9"
+answer = "Yes: `Protocol` is the review's term for how the pool was built, and its sections run from grey literature to limits."
+
+[[answer]]
+check = "name-content"
+path = "evidence/foraging-and-stopping/state-of-the-art.md"
+question = "the name 'state' and the opening are far apart in meaning (0.09): does the name predict the content?"
+file = "3f3f14344221"
+answer = "Yes: `State of the art` is step 3 of the review, and the opening says it gives the record for each sub-question."
