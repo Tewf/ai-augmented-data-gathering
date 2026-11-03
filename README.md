@@ -43,7 +43,7 @@ digraph where_it_sits {
 
 - **It writes its reviews in the shapes of [reader-ergonomics-review](https://github.com/Tewf/reader-ergonomics-review)**, the review as a genre; the shapes are that repository's.
 - **[ai-augmented-practice](https://github.com/Tewf/ai-augmented-practice) links it** for the practices whose algorithm lives here. It does not depend on that map.
-- **It obeys [reader-ergonomics](https://github.com/Tewf/reader-ergonomics/blob/4f99372093729dacf982e9174e94f6b8793c513d/standard.md)** (v1.20.0) and runs its checks in CI.
+- **It obeys [reader-ergonomics](https://github.com/Tewf/reader-ergonomics/blob/2e5b6f0c3e67d2dc8195a63cf882d46170e79a5a/standard.md)** (v1.21.0) and runs its checks in CI.
 - **It links down only.** The family's map is [ai-augmented](https://github.com/Tewf/ai-augmented).
 
 ## Scope

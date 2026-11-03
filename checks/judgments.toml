@@ -60,3 +60,17 @@ path = "evidence/foraging-and-stopping/state-of-the-art.md"
 question = "the name 'state' and the opening are far apart in meaning (0.09): does the name predict the content?"
 file = "3f3f14344221"
 answer = "Yes: `State of the art` is step 3 of the review, and the opening says it gives the record for each sub-question."
+
+[[answer]]
+check = "co-change"
+path = "README.fr.md"
+question = "changed together with decisions/README.md in 3 commits (100% of the rarer one's), from another folder: should they share a folder, or should one link to the other?"
+file = "1aef43e60c7f"
+answer = "They stay apart: `README.fr.md` serves another role than the file it changes with, and they change together by construction, not by overlap."
+
+[[answer]]
+check = "co-change"
+path = "README.md"
+question = "changed together with decisions/README.md in 3 commits (100% of the rarer one's), from another folder: should they share a folder, or should one link to the other?"
+file = "4651b90b6751"
+answer = "They stay apart: `README.md` serves another role than the file it changes with, and they change together by construction, not by overlap."
