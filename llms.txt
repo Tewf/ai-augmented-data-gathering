@@ -1,0 +1,15 @@
+# Data gathering
+
+> The most efficient way to gather data in general, information foraging first: foraging models, the stopping estimator for what is still unseen, the choice of the next source as a bandit, and the value of information for a dear source, as programs the reviews can run. Scope only; the review is not started.
+
+Each page's markdown source is served at the same path with a .md extension. This index is written by hand; AGENTS.md says to keep it in step.
+
+## The repository
+
+- [Data gathering](https://tewf.github.io/ai-augmented-data-gathering/README.md): the scope, the first job and the questions its review must answer
+- [Decisions](https://tewf.github.io/ai-augmented-data-gathering/decisions/README.md): one record per choice that shapes the repository
+
+## Contributing
+
+- [Contributing](https://tewf.github.io/ai-augmented-data-gathering/AGENTS.md): rules for changing this repository
+- [Standard](https://tewf.github.io/reader-ergonomics/standard.md): the reader-ergonomics card this repository obeys

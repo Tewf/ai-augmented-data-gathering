@@ -1,0 +1,105 @@
+name: Check against reader-ergonomics
+
+# The checks live in Tewf/reader-ergonomics and are not copied here: CI checks out both
+# repositories and runs that one's checks on this one.
+# Tiers program and meaning run on every push and pull request; syntax and the online
+# reference check run weekly, and on demand.
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "57 6 * * 1"   # Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch makes the older run moot.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  every-push:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    env:
+      FASTEMBED_CACHE_PATH: /home/runner/.cache/fastembed   # outside the checked tree
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: repository
+          fetch-depth: 0   # co-change and the age of PROVISIONAL tags read the whole history
+      - uses: actions/checkout@v4
+        with:
+          repository: Tewf/reader-ergonomics
+          ref: 4f99372093729dacf982e9174e94f6b8793c513d   # v1.20.0 (reader-ergonomics extending.md, Versions)
+          path: standard
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: standard/checks/meaning/requirements.txt
+      - name: Cache the embedding model
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/fastembed
+          key: fastembed-${{ hashFiles('standard/checks/meaning/requirements.txt') }}
+      - name: Install the meaning tier
+        run: pip install -r standard/checks/meaning/requirements.txt
+      - name: Clone the family beside this repository, for bibliography-keys
+        run: |
+          for name in $(python3 -c "import tomllib; print(*tomllib.load(open('repository/checks/config.toml', 'rb'))['bibliography_keys']['family'])"); do
+            git clone --quiet --depth 1 "https://github.com/Tewf/$name" "$name"
+          done
+      - name: Run the unit tests under checks/
+        run: python3 -m unittest discover -s repository/checks
+      - name: Check the repository, tiers program and meaning
+        # Runs the topic check, the Lean link check and the comparator (checks/local/) with the standard's own.
+        run: python3 standard/checks/run.py repository --tiers program,meaning --judge flag
+      - name: List the questions left for judgment
+        if: always()
+        run: cat repository/checks/out/needs-judgment.md 2>/dev/null || echo "No questions for judgment."
+
+  # The proofs: Lean checks every declaration the topics name. Mathlib is large, so its prebuilt cache is fetched first.
+  lean:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Fetch Mathlib's cache
+        run: lake exe cache get
+      - name: Build, failing on any warning, sorry included
+        run: lake build
+      - name: Compare each proof with its challenge, in Lean
+        # The challenge file holds sorry on purpose, so it is built apart; Agreement.lean fails when a type or an axiom differs.
+        run: lake build BlueprintCompare
+
+  weekly:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: repository
+      - uses: actions/checkout@v4
+        with:
+          repository: Tewf/reader-ergonomics
+          ref: 4f99372093729dacf982e9174e94f6b8793c513d   # v1.20.0 (reader-ergonomics extending.md, Versions)
+          path: standard
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: standard/checks/syntax/requirements.txt
+      - name: Install the syntax tier
+        run: pip install -r standard/checks/syntax/requirements.txt
+      - name: Check the repository, tier syntax
+        run: python3 standard/checks/run.py repository --tiers syntax --judge flag
+      - name: Resolve every reference online
+        if: always()
+        run: python3 standard/checks/run.py repository --online --only references --judge none

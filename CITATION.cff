@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: >-
+  If this repository helps you, you may cite it as below. It is an informal,
+  work-in-progress synthesis of published research, written with Claude, an AI
+  assistant by Anthropic. It is not an official standard, not peer-reviewed,
+  and not a new result.
+title: "ai-augmented-data-gathering (work in progress)"
+abstract: >-
+  The most efficient way to gather data in general, information foraging first: foraging models, the stopping estimator for what is still unseen, the choice of the next source as a bandit, and the value of information for a dear source, as programs the reviews can run. Scope only; the review is not started.
+type: software
+authors:
+  - name: "Tewf"
+repository-code: "https://github.com/Tewf/ai-augmented-data-gathering"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+keywords:
+  - information foraging
+  - optimal stopping
+  - species richness
+  - multi-armed bandit
+  - value of information
+  - literature review
