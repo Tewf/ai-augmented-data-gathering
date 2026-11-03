@@ -7,9 +7,10 @@ The most efficient way to gather data in general, **information foraging** first
 
 This page in French: [README.fr.md](README.fr.md).
 
-> **Status (2026-11-03):** set up; nothing is written yet beyond the scope. The first job is a literature review, not
-> started. The name is provisional until that review's first step says what the field calls this. It is not an
-> official standard, not a peer-reviewed study and not a new result.
+> **Status (2026-11-03):** the first job, a first-pass literature review of 40 sources, is written and ends on a named
+> baseline for the stopping rule. A program for it runs on three protocols of the family; their logs hold no results
+> with new concepts, so it has not yet run on a real log. The name is kept; the field's names are information foraging
+> and stopping criteria. It is not an official standard, not a peer-reviewed study and not a new result.
 >
 > **How it is made:** with Claude, an AI assistant by Anthropic, under the maintainer's direction, the way
 > reader-ergonomics was made. Corrections are welcome as issues.
@@ -60,24 +61,47 @@ digraph where_it_sits {
 
 ## The first job: a literature review
 
-Not started. It follows the order of a thesis review, and it is finished when it can name the baseline.
+Done, as a first pass in the five steps of a thesis review: 40 sources, 38 formal and 2 grey, in
+[evidence/foraging-and-stopping](evidence/foraging-and-stopping/README.md). The bibliography is
+[evidence/bibliography.md](evidence/bibliography.md).
 
-1. **Frame:** the problem in one sentence, and what each field calls it. Leads to verify: information foraging theory (Pirolli and Card 1999), search theory, optimal stopping, and active learning. The repository may be renamed then.
-2. **Review:** each name, searched by its academic name, its acronym and its author; surveys first.
-   - foraging models for a patch and for a scent, by their academic names and their authors, surveys first;
-   - estimators of what is still unseen, from Good-Turing to the species-richness literature of ecology;
-   - the choice of the next source as a bandit, and the value of information as decision analysis states it;
-   - reference implementations of each, found under the authors' names before anything is written as missing.
-3. **State of the art, and the case against.**
-4. **Position:** what this repository asks that the field does not already answer.
-5. **Baseline:** a program for the stopping estimator, run on the family's own search logs and compared with the stopping rule those reviews used, which the logs will show.
+## What the review found
 
-## Questions the review must answer
+- **The field's name is information foraging for the whole, and stopping has two homes.** In technology-assisted review
+  they are **stopping criteria**; in ecology, the estimation of **unseen species**. The repository is not renamed.
+- **The family's rule is a heuristic of a kind that failed a comparison.** Stopping a string after five results with no
+  new concept resembles stopping after 50, 100 or 200 irrelevant records.
+  That gave inconsistent recall on real review datasets (Callaghan 2020). Measured, on screening.
+  The Cochrane Handbook lists such rules and says they have had little formal evaluation (Lefebvre 2025). Convention.
+- **Estimators of the unseen exist and are implemented**, in R (iNEXT) and in Python (scikit-bio), but the two published
+  forms of Chao1 differ when doubletons are few. No source read applies them to a literature search. That is a
+  statement about this pass.
+- **The family's logs cannot feed an estimator.** None records the new concepts each result brought; each holds only
+  the route that first found a source. Run as they stand, the estimator gives coverage 0.00 to 0.05 on three
+  protocols, which follows from the form and not from the searches. Measured, descriptive.
+- **On random draws the estimator stops near its target and the rule stops early**: 6% to 21% of the weight unseen
+  against 31% to 44% (simulation only).
 
-- **When to stop.** How many sources does a review still miss when it stops, and does an estimator of the unseen predict it from the log alone?
-- **Where to look.** Does choosing the next source as a bandit find more of the relevant sources per search than the order the reviews followed?
-- **A dear source.** When is a paywalled or slow source worth its cost, as the value of information measures it?
-- **The logs.** Are the family's search logs kept in a form a program can read, and if not, what must they hold?
+## The baseline
+
+**Coverage stopping with Chao1 and Chao-Jost sample coverage, in the form of iNEXT** ([baseline](evidence/foraging-and-stopping/baseline.md)).
+
+- count the observations of each concept in the search log;
+- estimate the unseen from the concepts seen once and twice;
+- stop when the estimated coverage reaches a target (0.95, provisional) after at least 30 results;
+- print it beside the rule it is compared with: stop a string after five results with no new concept.
+
+The program is [checks/local/stopping_estimator.py](checks/local/stopping_estimator.py), with 18 tests and a
+[simulation](checks/local/simulate_stopping.py). The [decision](decisions/0002-coverage-stopping-is-the-baseline.md) records the choice.
+
+## Questions the review answered
+
+- **When to stop.** Partly. An estimator of the unseen is named and runs, and it tracks its target on random draws. Whether it
+  predicts what a review misses waits for a real log.
+- **Where to look.** Reviewed: bandits and foraging are theory, and no study read applies them to choosing sources.
+- **A dear source.** Reviewed: an index for costly options (Weitzman 1979) and the value of information are theory only.
+- **The logs.** No. A log needs the header `string,result,concepts`, one row per result in the order seen
+  ([what a log must hold](evidence/foraging-and-stopping/on-the-family.md)).
 
 ## Check it
 
@@ -95,6 +119,8 @@ master also renders the site, [tewf.github.io/ai-augmented-data-gathering](https
 
 | Part | Summary |
 |---|---|
+| [evidence](evidence/) | the review on foraging and stopping, and the bibliography |
+| [checks/local](checks/local/) | the stopping estimator, its tests and a simulation |
 | [decisions](decisions/) | one record per choice that shapes this repository, each opening with the decision in one sentence |
 
 ## Licence

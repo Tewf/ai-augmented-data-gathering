@@ -1,6 +1,6 @@
 # Data gathering
 
-> The most efficient way to gather data in general, information foraging first: foraging models, the stopping estimator for what is still unseen, the choice of the next source as a bandit, and the value of information for a dear source, as programs the reviews can run. Scope only; the review is not started.
+> The most efficient way to gather data in general, information foraging first: foraging models, the stopping estimator for what is still unseen, the choice of the next source as a bandit, and the value of information for a dear source, as programs the reviews can run. First review written: foraging and stopping, ending on a named baseline for the stopping rule, with a program that estimates the unseen from a search log.
 
 Each page's markdown source is served at the same path with a .md extension. This index is written by hand; AGENTS.md says to keep it in step.
 
@@ -8,6 +8,13 @@ Each page's markdown source is served at the same path with a .md extension. Thi
 
 - [Data gathering](https://tewf.github.io/ai-augmented-data-gathering/README.md): the scope, the first job and the questions its review must answer
 - [Decisions](https://tewf.github.io/ai-augmented-data-gathering/decisions/README.md): one record per choice that shapes the repository
+
+## The review
+
+- [Evidence](https://tewf.github.io/ai-augmented-data-gathering/evidence/README.md): the review and the bibliography of every work it cites
+- [Foraging and stopping](https://tewf.github.io/ai-augmented-data-gathering/evidence/foraging-and-stopping/README.md): a first pass of 40 sources, in the five steps of a thesis review
+- [Baseline](https://tewf.github.io/ai-augmented-data-gathering/evidence/foraging-and-stopping/baseline.md): coverage stopping with Chao1, compared with the rule of five results with no new concept
+- [On the family](https://tewf.github.io/ai-augmented-data-gathering/evidence/foraging-and-stopping/on-the-family.md): the estimator run on three protocols, and what a search log must hold
 
 ## Contributing
 

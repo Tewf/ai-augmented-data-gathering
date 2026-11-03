@@ -7,9 +7,11 @@ La manière la plus efficace de collecter des données en général, la **quête
 
 Cette page en anglais : [README.md](README.md). Les deux versions suivent le même état.
 
-> **État (2026-11-03) :** mis en place ; rien n'est encore écrit au-delà du périmètre. Le premier travail est une revue
-> de littérature, non commencée. Le nom est provisoire jusqu'à ce que la première étape de cette revue dise comment le
-> domaine nomme la chose. Ce n'est ni une norme officielle, ni une étude relue par des pairs, ni un résultat nouveau.
+> **État (2026-11-03) :** le premier travail, une revue de littérature de premier passage sur 40 sources, est écrit et
+> finit sur une référence nommée pour la règle d'arrêt. Un programme pour elle tourne sur trois protocoles de la famille ;
+> leurs journaux ne contiennent pas de résultats avec concepts nouveaux, donc il n'a pas encore tourné sur un vrai
+> journal. Le nom est gardé ; les noms du domaine sont quête d'information et critères d'arrêt. Ce n'est ni une norme
+> officielle, ni une étude relue par des pairs, ni un résultat nouveau.
 >
 > **Comment il est fait :** avec Claude, un assistant IA d'Anthropic, sous la direction du mainteneur, comme
 > reader-ergonomics. Les corrections sont bienvenues sous forme d'issues.
@@ -60,24 +62,48 @@ digraph where_it_sits {
 
 ## Le premier travail : une revue de littérature
 
-Non commencée. Elle suit l'ordre d'une revue de thèse, et elle est finie quand elle peut nommer la référence.
+Fait, en premier passage selon les cinq étapes d'une revue de thèse : 40 sources, 38 formelles et 2 grises, dans
+[evidence/foraging-and-stopping](evidence/foraging-and-stopping/README.md). La bibliographie est
+[evidence/bibliography.md](evidence/bibliography.md).
 
-1. **Cadrer :** le problème en une phrase, et comment chaque domaine le nomme. Pistes à vérifier : la théorie de la quête d'information (Pirolli et Card 1999), la théorie de la recherche, l'arrêt optimal et l'apprentissage actif. Le dépôt peut être renommé alors.
-2. **Revue :** chaque nom, cherché par son nom académique, son acronyme et son auteur ; les synthèses d'abord.
-   - les modèles de quête pour une parcelle et pour un indice, par leur nom académique et leurs auteurs, les synthèses d'abord ;
-   - les estimateurs de ce qui reste invisible, de Good-Turing à la littérature de l'écologie sur la richesse d'espèces ;
-   - le choix de la source suivante comme un bandit, et la valeur de l'information telle que l'analyse de décision la pose ;
-   - des implémentations de référence de chacun, trouvées sous le nom des auteurs avant d'écrire qu'elles manquent.
-3. **État de l'art, et le dossier contre.**
-4. **Positionnement :** ce que ce dépôt demande et que le domaine ne répond pas déjà.
-5. **Référence :** un programme pour l'estimateur d'arrêt, exécuté sur les journaux de recherche de la famille et comparé à la règle d'arrêt que ces revues ont suivie, que les journaux montreront.
+## Ce que la revue a trouvé
 
-## Questions auxquelles la revue doit répondre
+- **Le domaine s'appelle quête d'information pour l'ensemble, et l'arrêt a deux foyers.** En revue assistée par la
+  technologie, ce sont les **critères d'arrêt** ; en écologie, l'estimation des **espèces non vues**. Le dépôt n'est pas renommé.
+- **La règle de la famille est une heuristique qui a échoué à une comparaison.** Arrêter une chaîne après cinq
+  résultats sans concept nouveau ressemble à s'arrêter après 50, 100 ou 200 enregistrements non pertinents.
+  Cela a donné un rappel incohérent sur de vrais jeux de revues (Callaghan 2020). Mesuré, sur le tri.
+  Le manuel Cochrane énumère de telles règles et dit qu'elles ont été peu évaluées formellement (Lefebvre 2025). Convention.
+- **Des estimateurs de l'invisible existent et sont implémentés**, en R (iNEXT) et en Python (scikit-bio), mais les deux
+  formes publiées de Chao1 diffèrent quand les doubletons sont rares. Aucune source lue ne les applique à une recherche
+  bibliographique. C'est une phrase sur ce passage.
+- **Les journaux de la famille ne peuvent pas nourrir un estimateur.** Aucun ne note les concepts nouveaux de chaque
+  résultat ; chacun ne garde que la voie de la première trouvaille.
+  Tel quel, l'estimateur donne une couverture de 0,00 à 0,05 sur trois protocoles.
+  Cela découle de la forme et non des recherches. Mesuré, descriptif.
+- **Sur des tirages aléatoires, l'estimateur s'arrête près de sa cible et la règle s'arrête tôt** : 6 % à 21 % du poids
+  non vu contre 31 % à 44 % (simulation seulement).
 
-- **Quand s'arrêter.** Combien de sources une revue manque-t-elle encore quand elle s'arrête, et un estimateur de l'invisible le prédit-il à partir du seul journal ?
-- **Où chercher.** Choisir la source suivante comme un bandit trouve-t-il plus de sources pertinentes par recherche que l'ordre suivi par les revues ?
-- **Une source coûteuse.** Quand une source payante ou lente vaut-elle son coût, comme la valeur de l'information le mesure ?
-- **Les journaux.** Les journaux de recherche de la famille sont-ils tenus sous une forme qu'un programme lit, et sinon, que doivent-ils contenir ?
+## La référence
+
+**L'arrêt par couverture avec Chao1 et la couverture d'échantillon de Chao-Jost, dans la forme d'iNEXT** ([baseline](evidence/foraging-and-stopping/baseline.md)).
+
+- compter les observations de chaque concept dans le journal de recherche ;
+- estimer l'invisible à partir des concepts vus une fois et deux fois ;
+- s'arrêter quand la couverture estimée atteint une cible (0,95, provisoire) après au moins 30 résultats ;
+- l'imprimer à côté de la règle à laquelle on la compare : arrêter une chaîne après cinq résultats sans concept nouveau.
+
+Le programme est [checks/local/stopping_estimator.py](checks/local/stopping_estimator.py), avec 18 tests et une
+[simulation](checks/local/simulate_stopping.py). La [décision](decisions/0002-coverage-stopping-is-the-baseline.md) consigne le choix.
+
+## Questions auxquelles la revue a répondu
+
+- **Quand s'arrêter.** En partie. Un estimateur de l'invisible est nommé et tourne, et il suit sa cible sur des tirages
+  aléatoires. Savoir s'il prédit ce qu'une revue manque attend un vrai journal.
+- **Où chercher.** Passé en revue : bandits et quête sont de la théorie, et aucune étude lue ne les applique au choix des sources.
+- **Une source coûteuse.** Passé en revue : un indice pour options coûteuses (Weitzman 1979) et la valeur de l'information sont de la théorie seulement.
+- **Les journaux.** Non. Un journal demande l'en-tête `string,result,concepts`, une ligne par résultat dans l'ordre vu
+  ([ce qu'un journal doit contenir](evidence/foraging-and-stopping/on-the-family.md)).
 
 ## Vérifier
 
@@ -95,6 +121,8 @@ master construit aussi le site, [tewf.github.io/ai-augmented-data-gathering](htt
 
 | Partie | Résumé |
 |---|---|
+| [evidence](evidence/) | la revue sur la quête et l'arrêt, et la bibliographie |
+| [checks/local](checks/local/) | l'estimateur d'arrêt, ses tests et une simulation |
 | [decisions](decisions/) | une fiche par choix qui façonne ce dépôt, chacune ouvrant sur la décision en une phrase |
 
 ## Licence
