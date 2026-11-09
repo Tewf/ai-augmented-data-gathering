@@ -81,6 +81,12 @@ Fait, en premier passage selon les cinq étapes d'une revue de thèse : 40 sourc
   résultat ; chacun ne garde que la voie de la première trouvaille.
   Tel quel, l'estimateur donne une couverture de 0,00 à 0,05 sur trois protocoles.
   Cela découle de la forme et non des recherches. Mesuré, descriptif.
+- **Une liste de concepts fixée avant la recherche certifie la liste, pas le sujet.** Cinq journaux réels ont été lus.
+  Quatre avaient une liste fermée de 18 à 20 classes et atteignent une couverture de 1,00. Pourtant, entre un septième
+  et un tiers de leurs résultats n'entrent dans aucune classe
+  ([issue #1](https://github.com/Tewf/ai-augmented-data-gathering/issues/1)).
+  Avec `--unlisted-as-concept`, un tel résultat compte comme un concept à part, vu une fois, et pèse contre la
+  couverture. Mesuré, descriptif.
 - **Sur des tirages aléatoires, l'estimateur s'arrête près de sa cible et la règle s'arrête tôt** : 6 % à 21 % du poids
   non vu contre 31 % à 44 % (simulation seulement).
 

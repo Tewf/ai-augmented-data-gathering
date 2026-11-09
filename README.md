@@ -79,6 +79,10 @@ Done, as a first pass in the five steps of a thesis review: 40 sources, 38 forma
 - **The family's logs cannot feed an estimator.** None records the new concepts each result brought; each holds only
   the route that first found a source. Run as they stand, the estimator gives coverage 0.00 to 0.05 on three
   protocols, which follows from the form and not from the searches. Measured, descriptive.
+- **A list of concepts fixed before the search certifies the list, not the subject.** Five real logs were read. Four
+  had a closed list of 18 to 20 classes and reached coverage 1.00. Yet a seventh to a third of their results fit no
+  class ([issue #1](https://github.com/Tewf/ai-augmented-data-gathering/issues/1)). With `--unlisted-as-concept`, such a
+  result counts as a concept of its own, seen once, and weighs against the coverage. Measured, descriptive.
 - **On random draws the estimator stops near its target and the rule stops early**: 6% to 21% of the weight unseen
   against 31% to 44% (simulation only).
 

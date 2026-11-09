@@ -3,6 +3,13 @@
 The releases this repository pins, newest first, in the form of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 A pin move is recorded here, not in decisions/.
 
+## Unreleased
+
+### Added
+
+- `stopping_estimator.py --unlisted-as-concept` and `unlisted_as_concept` in `checks/config.toml`, off by default: a
+  result with no listed concept counts as one concept of its own, seen once (issue #1).
+
 ## [0.1.0] - 2026-11-04
 
 ### Changed

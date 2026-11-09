@@ -36,3 +36,4 @@ shared_links = []
 k_without_new = 5        # PROVISIONAL: results in a row that add no concept before a string is stopped
 coverage_target = 0.95   # PROVISIONAL: estimated sample coverage at which the estimator says stop
 min_results = 30         # PROVISIONAL: results before the estimator may say stop; a handful of equal results has no singleton and looks complete
+unlisted_as_concept = false  # count a result with no listed concept as its own concept (issue #1); off keeps the published runs

@@ -5,7 +5,9 @@ and prints, beside the family's rule "stop a string after k results that add no 
 
 Two inputs.
   A log file, CSV with the header `string,result,concepts`: one row per result seen, in the order seen, `concepts`
-  holding every concept the result carries (not only the new ones), separated by `;`.
+  holding every concept the result carries (not only the new ones), separated by `;`. With `--unlisted-as-concept`,
+  a result whose cell is empty counts as one concept of its own, seen once: on a closed list of classes, the results
+  the list cannot place then weigh against the coverage instead of vanishing (issue #1).
   A sources table, `--sources FILE`: a sources.md of the family, whose "Found via" or "Found" column names the routes
   that found each source. A source stands for a concept and a route for a string. This is the only form the family's
   protocols hold today; it records the first finder, so it is a poor log (evidence/foraging-and-stopping/on-the-family.md).
@@ -36,7 +38,7 @@ CONFIG = Path(__file__).resolve().parent.parent / "config.toml"
 
 def settings() -> dict:
     """The tunables, from checks/config.toml [stopping_estimator]; missing file or table gives the documented defaults."""
-    defaults = {"k_without_new": 5, "coverage_target": 0.95, "min_results": 30}
+    defaults = {"k_without_new": 5, "coverage_target": 0.95, "min_results": 30, "unlisted_as_concept": False}
     try:
         table = tomllib.loads(CONFIG.read_text(encoding="utf-8")).get("stopping_estimator", {})
     except (OSError, tomllib.TOMLDecodeError):
@@ -84,13 +86,19 @@ def good_turing_unseen_mass(n: int, f1: int) -> float:
     return f1 / n if n else 1.0
 
 
-def read_log(path: Path) -> list[tuple[str, str, list[str]]]:
-    """Rows (string, result, concepts) of a CSV search log, in order."""
+UNLISTED = "(unlisted) "
+
+
+def read_log(path: Path, unlisted_as_concept: bool = False) -> list[tuple[str, str, list[str]]]:
+    """Rows (string, result, concepts) of a CSV search log, in order; an empty cell optionally becomes its own concept."""
     rows = []
     with path.open(encoding="utf-8", newline="") as handle:
         for record in csv.DictReader(handle):
             concepts = [c.strip() for c in (record.get("concepts") or "").split(";") if c.strip()]
-            rows.append((record["string"].strip(), record["result"].strip(), concepts))
+            result = record["result"].strip()
+            if not concepts and unlisted_as_concept:
+                concepts = [UNLISTED + result]
+            rows.append((record["string"].strip(), result, concepts))
     return rows
 
 
@@ -219,11 +227,13 @@ def main(argv=None) -> int:
     parser.add_argument("--k", type=int, default=tunables["k_without_new"])
     parser.add_argument("--target", type=float, default=tunables["coverage_target"])
     parser.add_argument("--floor", type=int, default=tunables["min_results"], help="results before the estimator may say stop")
+    parser.add_argument("--unlisted-as-concept", action=argparse.BooleanOptionalAction, default=tunables["unlisted_as_concept"],
+                        help="count a result with no listed concept as a concept of its own, seen once")
     args = parser.parse_args(argv)
     if not args.logs and not args.sources:
         parser.error("give a log or --sources")
     for path in args.logs:
-        print(report(str(path), read_log(path), args.k, args.target, args.floor))
+        print(report(str(path), read_log(path, args.unlisted_as_concept), args.k, args.target, args.floor))
     for path in args.sources:
         print(report(str(path), read_sources(path), args.k, args.target, args.floor))
     return 0

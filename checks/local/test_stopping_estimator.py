@@ -99,6 +99,19 @@ class Readers(unittest.TestCase):
             path.write_text("string,result,concepts\nF1,w1,a; b\nF1,w2,a\nF2,w3,\n", encoding="utf-8")
             self.assertEqual(se.read_log(path), [("F1", "w1", ["a", "b"]), ("F1", "w2", ["a"]), ("F2", "w3", [])])
 
+    def test_unlisted_results_weigh_against_coverage(self):
+        # A closed list of two classes, each seen often, saturates; four results it cannot place lower the coverage
+        # only when they count as concepts of their own (issue #1).
+        body = "string,result,concepts\n" + "".join(f"s,r{i},a;b\n" for i in range(20)) + "".join(f"s,u{i},\n" for i in range(4))
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "log.csv"
+            path.write_text(body, encoding="utf-8")
+            closed = se.estimate(se.read_log(path))["abundance"]
+            counted = se.estimate(se.read_log(path, unlisted_as_concept=True))["abundance"]
+        self.assertEqual(closed["coverage"], 1.0)
+        self.assertEqual((counted["observed"], counted["f1"]), (6, 4))
+        self.assertLess(counted["coverage"], 0.95)
+
     def test_route_labels(self):
         self.assertEqual(se.route_labels("F7, read in part"), ["f7"])
         self.assertEqual(se.route_labels("forward, Vaccaro 2024"), ["forward vaccaro 2024"])
