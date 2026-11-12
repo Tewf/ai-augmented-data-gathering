@@ -26,11 +26,13 @@ leave a search string, and when the whole search may stop. Its rules are this re
 
 ## Stop the search
 
-- Run the estimator on the log:
-  `python3 checks/local/stopping_estimator.py <log.csv>` from a checkout of this repository.
-- It prints the estimated coverage and stop or go on. You may write that the search is done, or that nothing else
-  applies, only when it prints stop: coverage at least 0.95, after at least 30 results. The thresholds are PROVISIONAL,
-  in `checks/config.toml`.
+- Run the estimator on the log, from a checkout of this repository (`git clone
+  https://github.com/Tewf/ai-augmented-data-gathering`): `python3 checks/local/stopping_estimator.py <log.csv>`.
+- Read only its line that starts with `estimator`. It ends on `stop` or `keep searching`. The `rule` line and the
+  `verdict` line report the k rule beside it and may say stop when the estimator does not. The exit code is 0 either
+  way, so a script must read that line too.
+- You may write that the search is done, or that nothing else applies, only when the estimator line ends on `stop`:
+  coverage at least 0.95, after at least 30 results. The thresholds are PROVISIONAL, in `checks/config.toml`.
 - Otherwise report the coverage reached and the results seen, and keep the question open.
 
 ## What this does not guarantee
