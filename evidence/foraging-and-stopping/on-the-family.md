@@ -15,7 +15,7 @@ The baseline program ([baseline](baseline.md)) run on the search records of thre
 
 | Protocol | Sources with a route | Routes | Seen once (f1) | Seen twice (f2) | Estimated coverage | Chao1 unseen | "Five results, no new concept" |
 |---|---|---|---|---|---|---|---|
-| project (human-AI teaming, commit cf22160) | 35 of 44 | 18 | 35 | 0 | 0.00 | 578 | not met, longest dry run 0 |
+| project (human-AI teaming, commit 7b65bd3) | 35 of 44 | 18 | 35 | 0 | 0.00 | 578 | not met, longest dry run 0 |
 | agents (multi-agent teams, commit 8a05e7e) | 39 of 39 | 22 | 38 | 1 | 0.05 | 704 | not met, longest dry run 1 |
 | cases (case reports, commit 732a5e7) | 42 of 42 | 7 | 41 | 1 | 0.05 | 821 | not met, longest dry run 1 |
 
