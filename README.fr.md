@@ -129,6 +129,7 @@ master construit aussi le site, [tewf.github.io/ai-augmented-data-gathering](htt
 |---|---|
 | [evidence](evidence/) | la revue sur la quête et l'arrêt, et la bibliographie |
 | [checks/local](checks/local/) | l'estimateur d'arrêt, ses tests et une simulation |
+| [skills](skills/) | la base de référence comme compétence qu'un agent charge avant de chercher : [gather-data](skills/gather-data/SKILL.md) |
 | [decisions](decisions/) | une fiche par choix qui façonne ce dépôt, chacune ouvrant sur la décision en une phrase |
 
 ## Licence

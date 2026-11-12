@@ -125,6 +125,7 @@ master also renders the site, [tewf.github.io/ai-augmented-data-gathering](https
 |---|---|
 | [evidence](evidence/) | the review on foraging and stopping, and the bibliography |
 | [checks/local](checks/local/) | the stopping estimator, its tests and a simulation |
+| [skills](skills/) | the baseline as a skill an agent loads before it searches: [gather-data](skills/gather-data/SKILL.md) |
 | [decisions](decisions/) | one record per choice that shapes this repository, each opening with the decision in one sentence |
 
 ## Licence

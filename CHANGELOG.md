@@ -7,6 +7,9 @@ A pin move is recorded here, not in decisions/.
 
 ### Added
 
+- `skills/gather-data/SKILL.md`, the baseline as a skill an agent loads before it searches. It logs every result,
+  leaves a string after 5 results with no new concept, and stops when the estimator says so. Agents of other
+  repositories link this one place instead of restating the rules.
 - `stopping_estimator.py --unlisted-as-concept` and `unlisted_as_concept` in `checks/config.toml`, off by default: a
   result with no listed concept counts as one concept of its own, seen once (issue #1).
 
